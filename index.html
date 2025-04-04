@@ -1,13 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>3d art gallery</title>
-    <style>
-      body { margin: 0; }
-    </style>
-  </head>
-  <body>
-    <script type="module" src="/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <title>3d art gallery</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    h1,
+    h2 {
+      color: wheat;
+      text-align: center;
+      width: 100%;
+      font-weight: 100;
+      transition: opacity 0.5 ease-in-out;
+    }
+
+    #title {
+      position: fixed;
+      font-size: 4em;
+      top: 0.5em;
+    }
+
+    #artist {
+      position: fixed;
+      font-size: 2em;
+      color: gray;
+      top: 4em;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module" src="/main.js"></script>
+  <h1 id="title"></h1>
+  <h2 id="artist"></h2>
+</body>
+
 </html>

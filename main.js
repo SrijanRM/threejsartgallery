@@ -77,6 +77,7 @@ for (let i = 0; i < count; i++) {
         new THREE.MeshStandardMaterial({ map: leftBT })
     )
     left.name = `LeftArrow`;
+    left.userData = (i === count - 1) ? 0 : (i + 1);
     left.position.set(-1.9, 0, -4)
 
     baseNode.add(left)
@@ -86,6 +87,7 @@ for (let i = 0; i < count; i++) {
         new THREE.MeshStandardMaterial({ map: rightBT })
     )
     rigth.name = `RightArrow`;
+    rigth.userData = (i === 0) ? count - 1 : (i - 1);
     rigth.position.set(1.9, 0, -4)
     baseNode.add(rigth)
 }
@@ -108,13 +110,23 @@ mirror.position.y = -1.2;
 mirror.rotateX(-Math.PI / 2)
 scene.add(mirror);
 
-function rotateGallery(direction) {
+function rotateGallery(direction, newindex) {
     const deltaY = direction * (2 * Math.PI / count);
 
     new Tween(rootNode.rotation)
         .to({ y: rootNode.rotation.y + deltaY }, 1000) // 1000ms = 1s duration
         .easing(Easing.Quadratic.InOut)
-        .start();
+        .start().onStart(() => {
+            document.getElementById('title').style.opacity = 0;
+            document.getElementById('artist').style.opacity = 0;
+        })
+        .onComplete(() => {
+            document.getElementById('title').innerText = titles[newindex];
+            document.getElementById('artist').innerText = artist[newindex];
+
+            document.getElementById('title').style.opacity = 1;
+            document.getElementById('artist').style.opacity = 1;
+        })
 }
 
 function animate() {
@@ -139,11 +151,16 @@ window.addEventListener('click', (ev) => {
 
     const intersection = raycaster.intersectObject(rootNode, true);
     if (intersection.length > 0) {
-        if (intersection[0].object.name === 'LeftArrow') {
-            rotateGallery(-1);
+        const obj = intersection[0].object;
+        const newindex = obj.userData;
+        if (obj.name === 'LeftArrow') {
+            rotateGallery(-1, newindex);
         }
-        if (intersection[0].object.name === 'RightArrow') {
-            rotateGallery(1);
+        if (obj.name === 'RightArrow') {
+            rotateGallery(1, newindex);
         }
     }
 })
+
+document.getElementById('title').innerText = titles[0];
+document.getElementById('artist').innerText = artist[0];
