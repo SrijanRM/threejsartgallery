@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Reflector } from 'three/examples/jsm/Addons.js'
+import { Tween, Easing, update as updateTween } from 'tween';
 
 const images = [
     'deer.jpg',
@@ -107,7 +108,17 @@ mirror.position.y = -1.2;
 mirror.rotateX(-Math.PI / 2)
 scene.add(mirror);
 
+function rotateGallery(direction) {
+    const deltaY = direction * (2 * Math.PI / count);
+
+    new Tween(rootNode.rotation)
+        .to({ y: rootNode.rotation.y + deltaY }, 1000) // 1000ms = 1s duration
+        .easing(Easing.Quadratic.InOut)
+        .start();
+}
+
 function animate() {
+    updateTween();
     renderer.render(scene, camera);
 }
 
@@ -129,10 +140,10 @@ window.addEventListener('click', (ev) => {
     const intersection = raycaster.intersectObject(rootNode, true);
     if (intersection.length > 0) {
         if (intersection[0].object.name === 'LeftArrow') {
-
+            rotateGallery(-1);
         }
         if (intersection[0].object.name === 'RightArrow') {
-
+            rotateGallery(1);
         }
     }
 })
