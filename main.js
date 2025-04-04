@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import  {Reflector} from 'three/examples/jsm/Addons.js'
 
 const images = [
     'deer.jpg',
@@ -72,6 +73,18 @@ spotlight.target.position.set(0,0.5,-5);
 scene.add(spotlight)
 scene.add(spotlight.target)
 
+const mirror = new Reflector(
+    new THREE.CircleGeometry(10),
+    {
+        color:0x303030,
+        textureWidth:window.innerWidth,
+        textureHeight:window.innerHeight
+    }
+)
+mirror.position.y = -1.2;
+mirror.rotateX(-Math.PI / 2)
+scene.add(mirror);
+
 function animate() {
     rootNode.rotation.y += 0.002;
     renderer.render(scene, camera);
@@ -81,4 +94,5 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    mirror.getRenderTarget().setSize(window.innerWidth, window.innerHeight)
 })
