@@ -50,6 +50,12 @@ for (let i = 0; i < count; i++) {
     baseNode.rotation.y = i * (2 * Math.PI / count);
     rootNode.add(baseNode);
 
+    const border = new THREE.Mesh(
+        new THREE.BoxGeometry(3.2, 2.2, 0.09),
+        new THREE.MeshBasicMaterial({ color: 0x202020 })
+    )
+    border.position.z = -4;
+    baseNode.add(border)
     const artwork = new THREE.Mesh(
         new THREE.BoxGeometry(3, 2, 0.1),
         new THREE.MeshBasicMaterial({
