@@ -58,6 +58,7 @@ for (let i = 0; i < count; i++) {
         new THREE.BoxGeometry(3.2, 2.2, 0.09),
         new THREE.MeshStandardMaterial({ color: 0x202020 })
     )
+    border.name = `Border_${i}`;
     border.position.z = -4;
     baseNode.add(border)
     const artwork = new THREE.Mesh(
@@ -66,6 +67,7 @@ for (let i = 0; i < count; i++) {
             map: texture
         })
     );
+    artwork.name = `Art_${i}`;
     artwork.position.z = -4;
     baseNode.add(artwork);
 
@@ -73,14 +75,16 @@ for (let i = 0; i < count; i++) {
         new THREE.BoxGeometry(0.3, 0.3, 0.01),
         new THREE.MeshStandardMaterial({ map: leftBT })
     )
+    left.name = `LeftArrow`;
     left.position.set(-1.9, 0, -4)
-   
+
     baseNode.add(left)
 
     const rigth = new THREE.Mesh(
         new THREE.BoxGeometry(0.3, 0.3, 0.01),
         new THREE.MeshStandardMaterial({ map: rightBT })
     )
+    rigth.name = `RightArrow`;
     rigth.position.set(1.9, 0, -4)
     baseNode.add(rigth)
 }
@@ -112,4 +116,23 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     mirror.getRenderTarget().setSize(window.innerWidth, window.innerHeight)
+})
+
+window.addEventListener('click', (ev) => {
+    const raycaster = new THREE.Raycaster();
+    const mouseNDC = new THREE.Vector2(
+        (ev.clientX / window.innerWidth) * 2 - 1,
+        -(ev.clientY / window.innerHeight) * 2 + 1,
+    );
+    raycaster.setFromCamera(mouseNDC, camera);
+
+    const intersection = raycaster.intersectObject(rootNode, true);
+    if (intersection.length > 0) {
+        if (intersection[0].object.name === 'LeftArrow') {
+
+        }
+        if (intersection[0].object.name === 'RightArrow') {
+
+        }
+    }
 })
